@@ -1,0 +1,162 @@
+<html>
+  <head>
+    <style>
+      #map {
+      width: 500px;
+      height: 400px;
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization"></script>
+    <script>
+      function initialize() {
+        console.log("initialize()");
+        var mapCanvas = document.getElementById('map');
+        var mapOptions = {
+          center: new google.maps.LatLng(44.5403, -78.5463),
+          zoom: 8,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      styles: [
+      {
+      "featureType": "landscape",
+      "stylers": [
+      {
+      "hue": "#FFBB00"
+      },
+      {
+      "saturation": 43.400000000000006
+      },
+      {
+      "lightness": 37.599999999999994
+      },
+      {
+      "gamma": 1
+      }
+      ]
+      },
+      {
+      "featureType": "road.highway",
+      "stylers": [
+      {
+      "hue": "#FFC200"
+      },
+      {
+      "saturation": -61.8
+      },
+      {
+      "lightness": 45.599999999999994
+      },
+      {
+      "gamma": 1
+      }
+      ]
+      },
+      {
+      "featureType": "road.arterial",
+      "stylers": [
+      {
+      "hue": "#FF0300"
+      },
+      {
+      "saturation": -100
+      },
+      {
+      "lightness": 51.19999999999999
+      },
+      {
+      "gamma": 1
+      }
+      ]
+      },
+      {
+      "featureType": "road.local",
+      "stylers": [
+      {
+      "hue": "#FF0300"
+      },
+      {
+      "saturation": -100
+      },
+      {
+      "lightness": 52
+      },
+      {
+      "gamma": 1
+      }
+      ]
+      },
+      {
+      "featureType": "water",
+      "stylers": [
+      {
+      "hue": "#0078FF"
+      },
+      {
+      "saturation": -13.200000000000003
+      },
+      {
+      "lightness": 2.4000000000000057
+      },
+      {
+      "gamma": 1
+      }
+      ]
+      },
+      {
+      "featureType": "poi",
+      "stylers": [
+      {
+      "hue": "#00FF6A"
+      },
+      {
+      "saturation": -1.0989010989011234
+      },
+      {
+      "lightness": 11.200000000000017
+      },
+      {
+      "gamma": 1
+      }
+      ]
+      }
+      ]
+        }
+        var map = new google.maps.Map(mapCanvas, mapOptions)
+        console.log(map);
+
+        <!-- for entry in entries %} -->
+        <!-- vanr myLatLng = {lat: {{ entry.location.latitude }}, lng: {{ entry.location.longitude }} }; -->
+        <!-- var marker = new google.maps.Marker({ -->
+        <!--   position: myLatLng, -->
+        <!--   map: map, -->
+        <!--   title: 'Hello World!' -->
+        <!-- }); -->
+        <!-- endfor %} -->
+        <!-- map.setCenter(marker.getPosition()); -->
+
+      function getPoints() {
+      output = [];
+      {% for entry in entries %}
+      latlng = new google.maps.LatLng({{ entry.location.latitude }}, {{ entry.location.longitude }})
+      output.push(latlng)
+	{% endfor %}
+	map.setCenter(latlng);
+      return output;
+        }
+
+        heatmap = new google.maps.visualization.HeatmapLayer({
+        data: getPoints(),
+        map: map
+          });
+
+          heatmap.set('radius', 20);
+      
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+  </head>
+  <body>
+    <div id="map"></div>
+  </body>
+</html>
